@@ -193,6 +193,7 @@ TArray<FColor> UVertexPainterLibrary::GetSkeletalMeshVertexColors(USkeletalMeshC
 		return VertexColors;
 	}
 
+	// 骨骼网格体不需要进行下两行处理(与静态网格体不同)
 	// const int32 LODNum = StaticMeshComponent->GetStaticMesh()->GetNumLODs();
 	// StaticMeshComponent->SetLODDataCount(LODNum, LODNum);
 	if (!SkeletalMeshComponent->LODInfo.IsValidIndex(LODIndex))
@@ -208,7 +209,6 @@ TArray<FColor> UVertexPainterLibrary::GetSkeletalMeshVertexColors(USkeletalMeshC
 	VertexColors.Init(FColor::White, VertexNum);
 	FSkelMeshComponentLODInfo& LODInfo = SkeletalMeshComponent->LODInfo[LODIndex];
 	
-	// 先读取元素的顶点颜色数组
 	// 必须进行判断，否则如果网格体没有顶点颜色(OverrideVertexColors)则会报错
 	if (LODInfo.OverrideVertexColors)
 	{
@@ -396,7 +396,6 @@ TArray<FVertexOverrideColorInfo> UVertexPainterLibrary::GetSkeletalMeshVertexOve
 	FLinearColor OverrideColor)
 {
 	// note：骨骼网格体获取顶点位置的方式与静态网格体不同
-
 	TArray<FVertexOverrideColorInfo> VertexOverrideColorInfos;
 	if (!SkeletalMeshComponent || !SkeletalMeshComponent->SkeletalMesh)
 	{
